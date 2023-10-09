@@ -41,6 +41,11 @@ public class WheelController : MonoBehaviour
 
     void Update()
     {
+        if (!_rotate && _intentos >= 3)
+        {
+            LevelManager.Instance.NextScene();
+        }
+
         // Se ejecuta por cada Frame
         // Transcurre en un tiempo delta (del frame al frame actual X cantidad de milisegundos)
         if (_rb.angularVelocity > 0)
@@ -69,44 +74,43 @@ public class WheelController : MonoBehaviour
     {
         float rotation = transform.eulerAngles.z;
 
-        if (rotation >= 22 && rotation < 22)
+        if (rotation >= 22.5F && rotation < 67.5F)
         {
             SetWheelRotation(45.0F);
             Win(400);
         }
-        else if (rotation >= 67 && rotation < 112)
+        else if (rotation >= 67.5F && rotation < 112.5F)
         {
             SetWheelRotation(90.0F);
             Win(100);
         }
-        else if (rotation >= 112 && rotation < 157)
+        else if (rotation >= 112.5F && rotation < 157.5F)
         {
-            // el false es para que no haga loop
             AudioManager.Instance.PlaySFX("Jackpot", false);
             SetWheelRotation(135.0F);
             Win(3000);
         }
-        else if (rotation >= 157 && rotation < 202)
+        else if (rotation >= 157.5F && rotation < 202.5F)
         {
             SetWheelRotation(180.0F);
             Win(600);
         }
-        else if (rotation >= 202 && rotation < 247)
+        else if (rotation >= 202.5F && rotation < 247.5F)
         {
             SetWheelRotation(225.0F);
             Win(100);
         }
-        else if (rotation >= 247 && rotation < 292)
+        else if (rotation >= 247.5F && rotation < 292.5F)
         {
             SetWheelRotation(270.0F);
             Win(400);
         }
-        else if (rotation >= 292 && rotation < 337)
+        else if (rotation >= 292.5F && rotation < 337.5F)
         {
             SetWheelRotation(315.0F);
             Win(600);
         }
-        else if (rotation >= 337 || rotation < 22)
+        else if (rotation >= 337.5F || rotation < 22.5F)
         {
             SetWheelRotation(0.0F);
             Win(1000);
@@ -123,13 +127,11 @@ public class WheelController : MonoBehaviour
         _prize += prize;
         moneyText.text = "$" +_prize.ToString("#,##0.00");
         StateManager.Instance.setPrize(_prize);
-
     }
 
     public void Rotate()
     {
-
-        if (!_rotate)
+        if (!_rotate && _intentos < 3)
         {
             _endingTime = Random.Range(0.5F, 2.0F);
             _rotate = true;
@@ -138,15 +140,6 @@ public class WheelController : MonoBehaviour
             AudioManager.Instance.PlaySFX("Spin", true);
 
             _intentos++;
-
-            if (_intentos >= 4)
-            {
-                LevelManager.Instance.NextScene();
-            }
-
         }
-
-
-
     }
 }

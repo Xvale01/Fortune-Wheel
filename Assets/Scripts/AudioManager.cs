@@ -23,7 +23,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.Awake();
 
-        if (_musicSource == null && _sfxSource == null)
+        if (_musicSource == null)
         {
             _musicSource = gameObject.AddComponent<AudioSource>();
             _sfxSource = gameObject.AddComponent<AudioSource>();
@@ -56,19 +56,17 @@ public class AudioManager : Singleton<AudioManager>
     public void PlaySFX(string name, bool loop = true)
     {
         Sound sfx = FindSound(name);
-        if (sfx != null)
+        if (sfx == null) return;
+
+        if (loop)
         {
-            if (!loop)
-            {
-                _sfxSource.PlayOneShot(sfx.sound);
-            }
-            else
-            {
-                _sfxSource.loop = loop;
-                _sfxSource.clip = sfx.sound;
-                _musicSource.Play();
-            }
-        
+            _sfxSource.loop = loop;
+            _sfxSource.clip = sfx.sound;
+            _sfxSource.Play();
+        }
+        else
+        {
+            _sfxSource.PlayOneShot(sfx.sound);
         }
     }
 
